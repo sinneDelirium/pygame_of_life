@@ -1,0 +1,9 @@
+Still Life
+Yes: block, beehive
+No: loaf, boat, tub
+Oscillators
+Yes: blinker, toad
+No: beacon, pulsar, pentadecathlon
+Spaceships
+Yes: glider, lwss
+No: mwss, hwss
