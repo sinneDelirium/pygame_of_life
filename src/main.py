@@ -14,6 +14,10 @@ from pygame.locals import (
 
 # Create outline around blocks themselves
 # Add ability to add patterns with mouse
+# Add maps from file
+# Convert to HashLife algorithm
+# Allow for comparisons between algorithms (ms between frames)
+# Eventually convert to golly's .mc file format from 2D array
 
 SIZE = 600
 FPS = 10
