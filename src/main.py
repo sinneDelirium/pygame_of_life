@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import copy
 import pygame
+from patterns import *
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -12,8 +13,14 @@ from pygame.locals import (
     QUIT
 )
 
-# Create outline around blocks themselves
+# Currently working on:
+# Create outline around blocks themselves (black outline with white interior)
 # Add ability to add patterns with mouse
+# Draw string with current generation
+# Draw string with current pattern selection and category (still lifes, oscillators, spaceships, etc.)
+# Draw outline around area that pattern will be placed using mouse
+
+# Future features:
 # Add maps from file
 # Convert to HashLife algorithm
 # Allow for comparisons between algorithms (ms between frames)
@@ -21,10 +28,6 @@ from pygame.locals import (
 
 SIZE = 600
 FPS = 10
-OSICILLATOR = [[1],
-               [1],
-               [1]
-               ]
 
 
 class Game:
@@ -88,10 +91,9 @@ class Game:
 
 
     def add_pattern(self, pattern, row, col):
-        if pattern == 0:
-            for i in range(len(OSICILLATOR)):
-                for j in range(len(OSICILLATOR[i])):
-                    self.grid[row + i][col + j] = OSICILLATOR[i][j]
+        # Need to generate outline of zero cells around pattern and check it against
+        # borders of grid
+        pass
 
 
     def render(self):
