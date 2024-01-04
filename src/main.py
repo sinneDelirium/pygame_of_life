@@ -14,9 +14,7 @@ from pygame.locals import (
     QUIT
 )
 
-
-# Create outline around blocks themselves (black outline with white interior)
-# Implement wrap-around
+# Implement wrap-around OR create a border of dead cells
 # Add ability to add patterns with mouse
 # Draw string with current generation
 # Draw string with current pattern selection and category (still lifes, oscillators, spaceships, etc.)
@@ -25,7 +23,10 @@ from pygame.locals import (
 
 
 SCREEN_SIZE = (600, 600)
-GRID_SIZE = (150, 150)
+GRID_SIZE = (200, 200)
+FG_COLOR = (0, 0, 0)
+BG_COLOR = (255, 255, 255)
+OUTLINE_THICKNESS = 1
 FPS = 30
 
 class Game:
@@ -48,7 +49,7 @@ class Game:
         self.block_h = self.screen_height / self.grid_height
         self.grid = [[0 for x in range(self.grid_width)] for y in range(self.grid_height)]
 
-        # Add funky patterns
+        # Add funky pattern
         self.add_funky_pattern()
 
 
@@ -97,17 +98,22 @@ class Game:
 
 
     def add_pattern(self, pattern, row, col):
-        pattern_width = len(pattern[0])
-        pattern_height = len(pattern)
-
-        # Check if pattern is fully within grid
-        if row + pattern_height > self.grid_height or col + pattern_width > self.grid_width:
-            return
-
-        # Make sure pattern exists and then add it to grid
         if pattern:
+            pattern_width = len(pattern[0])
+            pattern_height = len(pattern)
+
+            # Check if pattern is fully within grid
+            if (row + pattern_height + 1 > self.grid_height or
+                col + pattern_width + 1 > self.grid_width or
+                row - pattern_width - 1 < 0 or
+                col - pattern_height - 1 < 0
+                ):
+                print("Pattern out of bounds")
+                return
+
             # Fill background area and one layer border with 0s
-            self.fill_area(row, col, pattern_width, pattern_height, 0)
+            self.fill_area(row - 1, col - 1, pattern_width + 1, pattern_height + 1, 0)
+
             # Fill pattern area with 1s
             for i in range(pattern_height):
                 for j in range(pattern_width):
@@ -117,21 +123,25 @@ class Game:
     def add_funky_pattern(self):
         for i in range(-10, 10):
             for j in range(-10, 10):
+                grid_w_by_2  = self.grid_width // 2
+                grid_h_by_2 = self.grid_height // 2
                 self.add_pattern(PATTERNS["pulsar"],
-                                 self.grid_width // 2 + r.randint(-10, 10),
-                                 self.grid_height // 2 + r.randint(-10, 10))
+                                 grid_w_by_2 + r.randint(-grid_w_by_2, grid_w_by_2),
+                                 grid_h_by_2 + r.randint(-grid_h_by_2, grid_h_by_2))
 
 
     def render(self):
         for row in range(self.grid_height):
             for col in range(self.grid_width):
-                color = (255,255,255)
+                # Determine color based on state
+                color = BG_COLOR
                 if self.grid[row][col] == 1:
-                    color = (0,0,0)
+                    color = FG_COLOR
+
                 rect = pygame.Rect(col * self.block_w,
                                    row * self.block_h,
                                    self.block_w, self.block_h)
-                pygame.draw.rect(self.display_surf, color, rect)
+                pygame.draw.rect(self.display_surf, color, rect, OUTLINE_THICKNESS)
         pygame.display.flip()
 
 
