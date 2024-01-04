@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import copy
 import pygame
+import random as r
 from patterns import PATTERNS
 from pygame.locals import (
     K_UP,
@@ -46,7 +47,9 @@ class Game:
         self.block_w = self.screen_width / self.grid_width
         self.block_h = self.screen_height / self.grid_height
         self.grid = [[0 for x in range(self.grid_width)] for y in range(self.grid_height)]
-        self.add_pattern(PATTERNS["boat"], self.grid_width // 2, self.grid_height // 2)
+
+        # Add funky patterns
+        self.add_funky_pattern()
 
 
     def event(self, event):
@@ -109,6 +112,14 @@ class Game:
             for i in range(pattern_height):
                 for j in range(pattern_width):
                     self.grid[row + i][col + j] = pattern[i][j]
+
+
+    def add_funky_pattern(self):
+        for i in range(-10, 10):
+            for j in range(-10, 10):
+                self.add_pattern(PATTERNS["pulsar"],
+                                 self.grid_width // 2 + r.randint(-10, 10),
+                                 self.grid_height // 2 + r.randint(-10, 10))
 
 
     def render(self):

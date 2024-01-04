@@ -1,4 +1,4 @@
-Game of Life by John H. Conway written in Python using Pygame.
+Game of Life by John H. Conway written in Python using Pygame. //
 
 # Future ideas
 Game Squared of Life
